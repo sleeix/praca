@@ -1,0 +1,82 @@
+<div class="min-h-screen bg-neutral-100 flex items-start justify-center py-16 px-2">
+  <div class="w-full max-w-md">
+
+    <div class="text-center mb-8">
+      <div class="flex items-center justify-center gap-2.5 mb-4">
+        <div class="w-10 h-10 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 3L3 8l9 13L21 8l-3-5z" />
+            <path d="M3 8h18M6 3l3 5M18 3l-3 5" />
+          </svg>
+        </div>
+      </div>
+      <h1 class="text-2xl font-bold text-neutral-900">Tworzenie konta</h1>
+      <p class="text-neutral-500 text-sm mt-1">Dołącz do Maestro Barber</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 sm:p-8">
+      <form action="/auth/register" method="POST" class="space-y-5">
+
+        <div>
+          <label for="name" class="block mb-1.5 text-sm font-semibold text-neutral-700">Nazwa użytkownika<label class="text-red-500">*</label></label>
+          <input id="name" type="text" name="name" placeholder="jankowalski97" autocomplete="name" required
+          oninvalid="this.setCustomValidity('Wpisz nazwę użytkownika. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label for="email" class="block mb-1.5 text-sm font-semibold text-neutral-700">Adres e-mail<label class="text-red-500">*</label></label>
+          <input id="email" type="email" name="email" placeholder="example@gmail.com" autocomplete="email" required
+          oninvalid="this.setCustomValidity('Wpisz adres email. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label for="password" class="block mb-1.5 text-sm font-semibold text-neutral-700">Hasło<label class="text-red-500">*</label></label>
+          <input id="password" type="password" name="password" placeholder="••••••••" autocomplete="new-password" required
+          oninvalid="this.setCustomValidity('Wpisz hasło. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label for="passwordConfirm" class="block mb-1.5 text-sm font-semibold text-neutral-700">Powtórz hasło<label class="text-red-500">*</label></label>
+          <input id="passwordConfirm" type="password" name="passwordConfirm" placeholder="••••••••" required
+          oninvalid="this.setCustomValidity('Wpisz ponownie hasło. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div class="flex items-start gap-3">
+          <input id="agree-to-policies" type="checkbox" required name="agree-to-policies" required
+            oninvalid="this.setCustomValidity('Zaznacz wymaganą zgodę.')"
+            oninput="this.setCustomValidity('')"
+            class="w-4 h-4 accent-amber-400 cursor-pointer rounded border-neutral-300 mt-0.5">
+          <label for="agree-to-policies" class="text-sm text-neutral-600 cursor-pointer leading-relaxed">
+            Akceptuję
+            <a href="#"
+              class="font-semibold text-amber-600 hover:text-amber-700 underline underline-offset-2">regulamin</a><label class="text-red-500">*</label>
+          </label>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-amber-400 hover:bg-amber-300 text-neutral-900 font-bold text-sm py-3 rounded-xl transition">
+          Utwórz konto
+        </button>
+
+        <div class="border-t border-neutral-200 pt-4 text-center text-sm text-neutral-500">
+          Masz już konto?
+          <a href="/auth/login"
+            class="font-semibold text-amber-600 hover:text-amber-700 underline underline-offset-2 ml-1">
+            Zaloguj się
+          </a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,230 @@
+{{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pl.js"></script>
+
+<div class="min-h-screen bg-neutral-100">
+  <div class="mx-auto w-full px-2 sm:px-3 md:px-6 lg:px-[8%] xl:px-[10%]">
+    <div class="pt-12 flex justify-center">
+      <div class="w-full max-w-md">
+
+
+        <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900">
+          Zarezerwuj wizytę
+        </h2>
+
+        <div class="w-full max-w-md mt-6">
+          <div class="bg-white shadow-lg rounded-2xl p-8">
+
+            <form class="space-y-4 sm:text-base text-sm" action="/booking" method="POST">
+
+              <div>
+                <label for="fullname" class="block mb-2 font-medium">Imię i nazwisko</label>
+                <input type="text" name="fullname" placeholder="Jan Kowalski" required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"/>
+              </div>
+
+              <div>
+                <label for="email" class="block mb-2 font-medium">Adres email</label>
+                <input type="email" name="email" placeholder="example@gmail.com" required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"/>
+              </div>
+              
+              <div>
+                <label for="phone" class="block mb-2 font-medium">Numer telefonu</label>
+                <input type="text" name="phone" pattern="[0-9]{9}" maxlength="9" inputmode="numeric" placeholder="123456789" required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"/>
+              </div>
+
+              <div>
+                <label for="service" class="block mb-2 font-medium">Rodzaj usługi</label>
+                <select name="service" required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600">
+                  <option value="" hidden selected>Wybierz usługę</option>
+                  <option>Strzyżenie męskie</option>
+                  <option>Strzyżenie damskie</option>
+                  <option>Strzyżenie dzieci</option>
+                  <option>Strzyżenie brody</option>
+                  <option>Podcięcie grzywki</option>
+                  <option>Koloryzacja</option>
+                  <option>Ombre/Sombre</option>
+                  <option>Modelowanie</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="date" class="block mb-2 font-medium">Termin wizyty</label>
+                <input type="text" id="date" name="date" readonly required onclick="openDateSheet()" placeholder="Wybierz datę"
+                  class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                  placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600" />
+              </div>
+
+              <div>
+                <label for="time" class="block mb-2 font-medium">Godzina wizyty</label>
+                <select name="time" id="time" required disabled 
+                  class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 
+                  placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600">
+                  <option value="" hidden selected>Wybierz godzinę</option>
+                  <option value="09:00">09:00</option>
+                  <option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
+                </select>
+              </div>
+
+              <button type="submit" class="w-full rounded-md bg-indigo-600 py-2 font-semibold
+              text-white shadow-sm hover:bg-indigo-500
+              focus-visible:outline-2 focus-visible:outline-indigo-600">
+                Rezerwuj
+              </button>
+
+            </form>
+          </div>
+        </div>
+        <div id="dateSheet" class="fixed inset-0 z-50 hidden md:hidden">
+
+          <div class="absolute inset-0 bg-black/60" onclick="closeDateSheet()"></div>
+
+          <div
+            class="absolute bottom-0 left-0 right-0 bg-neutral-900 border-t border-neutral-700 rounded-t-2xl p-4 animate-slide-up">
+
+            <div class="flex items-center justify-between mb-4">
+              <p class="font-semibold text-lg text-white">Wybierz dzień</p>
+              <button onclick="closeDateSheet()" class="text-neutral-400 text-xl">✕</button>
+            </div>
+
+            <input id="mobileDatePicker" type="text" class="hidden">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const timeSelect = document.getElementById('time');
+  const dateInput = document.getElementById('date');
+
+  function openDateSheet() {
+    document.getElementById('dateSheet').classList.remove('hidden');
+  }
+
+  function closeDateSheet() {
+    document.getElementById('dateSheet').classList.add('hidden');
+  }
+
+  function isSalonClosedNow() {
+    const now = new Date();
+    const day = now.getDay();
+    const hour = now.getHours();
+
+    if (day === 0) return true;
+    if (day === 6) return hour < 10 || hour >= 15;
+    return hour < 9 || hour >= 17;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const isMobile = window.innerWidth < 768;
+
+    flatpickr("#date", {
+      locale: flatpickr.l10ns.pl,
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disableMobile: true,
+      clickOpens: !isMobile,
+      disable: [
+        function (date) {
+          if (date.getDay() === 0) return true;
+
+          const today = new Date();
+          if (
+            date.toDateString() === today.toDateString() &&
+            isSalonClosedNow()
+          ) return true;
+
+          return false;
+        }
+      ],
+      onChange(selectedDates) {
+        timeSelect.disabled = false;
+        handleTimeFiltering(selectedDates[0]);
+      }
+    });
+
+    flatpickr("#mobileDatePicker", {
+      locale: flatpickr.l10ns.pl,
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      inline: true,
+      disable: [
+        function (date) {
+          if (date.getDay() === 0) return true;
+
+          const today = new Date();
+          if (
+            date.toDateString() === today.toDateString() &&
+            isSalonClosedNow()
+          ) return true;
+
+          return false;
+        }
+      ],
+      onChange(selectedDates, dateStr) {
+        dateInput.value = dateStr;
+        timeSelect.disabled = false;
+        closeDateSheet();
+        handleTimeFiltering(selectedDates[0]);
+      }
+    });
+
+    async function handleTimeFiltering(selectedDate) {
+      const day = selectedDate.getDay();
+      const now = new Date();
+      const formattedDate = selectedDate.toISOString().split('T')[0];
+
+      const response = await fetch(`/booking/booked-times?date=${formattedDate}`);
+      const bookedTimes = await response.json();
+
+      Array.from(timeSelect.options).forEach(option => {
+        if (!option.value) return;
+
+        const hour = parseInt(option.value);
+        let hide = false;
+
+        if (day === 6) hide = hour < 10 || hour >= 15;
+        else hide = hour < 9 || hour >= 17;
+
+        if (selectedDate.toDateString() === now.toDateString()) {
+          hide = hide || hour <= now.getHours();
+        }
+
+        if (bookedTimes.includes(option.value)) {
+          hide = true;
+        }
+
+        option.disabled = hide;
+        option.style.display = hide ? "none" : "block";
+      });
+
+      if (dateInput.value) {
+        const existingDate = new Date(dateInput.value);
+        handleTimeFiltering(existingDate);
+      }
+
+      dateInput.addEventListener('input', () => {
+        if (!dateInput.value) {
+          timeSelect.disabled = true;
+          timeSelect.value = '';
+        }
+      });
+    }
+  });
+</script> --}}

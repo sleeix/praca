@@ -1,0 +1,83 @@
+<section class="min-h-screen py-16 bg-neutral-100">
+  <div class="max-w-2xl mx-auto px-2">
+
+    <div class="text-center mb-10">
+      <span class="inline-block bg-amber-100 text-amber-700 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+        Kontakt
+      </span>
+      <h1 class="text-2xl sm:text-3xl font-bold text-neutral-900">Formularz kontaktowy</h1>
+      <p class="text-neutral-500 text-sm mt-2">Odpiszemy najszybciej jak to możliwe</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 sm:p-8">
+      <form action="/contact" method="POST" class="space-y-5">
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block mb-1.5 text-sm font-semibold text-neutral-700">Nazwa użytkownika<label class="text-red-500">*</label></label>
+            <input type="text" name="name" placeholder="Jan" required
+            oninvalid="this.setCustomValidity('Wpisz nazwę użytkownika. Pole nie może być puste')"
+            oninput="this.setCustomValidity('')"
+              value="{{user.name}}"
+              class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+          </div>
+          <div>
+            <label class="block mb-1.5 text-sm font-semibold text-neutral-700">Email<label class="text-red-500">*</label></label>
+            <input type="email" name="email" placeholder="example@gmail.com" required
+            oninvalid="this.setCustomValidity('Wpisz adres email. Pole nie może być puste')"
+            oninput="this.setCustomValidity('')"
+              value="{{user.email}}"
+              class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block mb-1.5 text-sm font-semibold text-neutral-700">Numer telefonu<label class="text-red-500">*</label></label>
+          <input type="text" name="phone" placeholder="123456789" pattern="[0-9]{9}" maxlength="9" inputmode="numeric" required
+          oninvalid="this.setCustomValidity('Wpisz 9-cyfrowy numer telefonu. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 text-sm font-semibold text-neutral-700">Temat<label class="text-red-500">*</label><span class="text-neutral-400 font-normal"> (max. 20 znaków)</span></label>
+          <input type="text" name="subject" placeholder="Temat wiadomości" required maxlength="20"
+          oninvalid="this.setCustomValidity('Wpisz temat wiadomości. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 text-sm font-semibold text-neutral-700">Treść wiadomości<label class="text-red-500">*</label></label>
+          <textarea name="message" rows="4" placeholder="Twoja wiadomość..." required
+          oninvalid="this.setCustomValidity('Wpisz treść wiadomości. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition resize-none"></textarea>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <div class="flex items-center mt-0.5">
+            <input id="privacy" type="checkbox" required
+            oninvalid="this.setCustomValidity('Zaznacz wymaganą zgodę.')"
+            oninput="this.setCustomValidity('')"
+              class="w-4 h-4 accent-amber-400 cursor-pointer rounded border-neutral-300">
+          </div>
+          <label for="privacy" class="text-sm text-neutral-600 leading-relaxed cursor-pointer">
+            Zgadzam się z
+            <a href="#" class="font-semibold text-amber-600 hover:text-amber-700 underline underline-offset-2">polityką prywatności</a><label class="text-red-500">*</label>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <button type="submit"
+            class="bg-amber-400 hover:bg-amber-300 text-neutral-900 font-bold text-sm py-3 px-8 rounded-xl transition">
+            Wyślij wiadomość
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+{{> footer}}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maestro Barber</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 3L3 8l9 13L21 8l-3-5z' fill='%23FBBF24'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style> body { font-family: 'Geist', sans-serif; } .font-display { font-family: 'Playfair Display', serif; } </style>
+</head>
+
+<body class="bg-neutral-100 text-neutral-900 antialiased">
+
+  {{> navbar}}
+
+  {{> alert}}
+
+  {{{body}}}
+
+  {{> bookingModal}}
+  {{> cancelModal}}
+  {{> deleteModal}}
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pl.js"></script>
+
+<div id="bookingModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+
+  <div class="bg-white rounded-2xl w-full max-w-md shadow-xl border border-neutral-200 relative">
+
+    <button onclick="closeBookingModal()"
+      class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="p-6 sm:p-8">
+
+      <h2 class="text-xl font-bold mb-6 text-neutral-900">Zarezerwuj wizytę</h2>
+
+      <form class="space-y-4 text-sm" action="/booking" method="POST">
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Imię i nazwisko<label class="text-red-500">*</label></label>
+          <input type="text" name="fullname" placeholder="Jan Kowalski" required
+          oninvalid="this.setCustomValidity('Wpisz imię i nazwisko. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Adres email<label class="text-red-500">*</label></label>
+          <input type="email" name="email" placeholder="example@gmail.com" required
+          oninvalid="this.setCustomValidity('Wpisz adres email. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Numer telefonu<label class="text-red-500">*</label></label>
+          <input type="text" name="phone" pattern="[0-9]{9}" maxlength="9" inputmode="numeric" placeholder="123456789" required
+          oninvalid="this.setCustomValidity('Wpisz 9-cyfrowy numer telefonu. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Usługa<label class="text-red-500">*</label></label>
+          <input type="text" id="selectedService" name="service" readonly
+            class="w-full rounded-xl border border-neutral-200 bg-neutral-100 px-4 py-2.5 text-neutral-700 cursor-default">
+          <input type="hidden" id="selectedDuration" value="60">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Termin wizyty<label class="text-red-500">*</label></label>
+          <input type="text" id="date" name="date" readonly required placeholder="Wybierz datę"
+          oninvalid="this.setCustomValidity('Wybierz termin wizyty. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition cursor-pointer">
+        </div>
+
+        <div>
+          <label class="block mb-1.5 font-semibold text-neutral-700">Godzina wizyty<label class="text-red-500">*</label></label>
+          <select name="time" id="time" required disabled
+          oninvalid="this.setCustomValidity('Wybierz godzinę wizyty. Pole nie może być puste')"
+          oninput="this.setCustomValidity('')"
+            class="w-full rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+            <option value="" hidden selected>Najpierw wybierz datę</option>
+          </select>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-amber-400 hover:bg-amber-300 text-neutral-900 font-bold py-3 rounded-xl transition">
+          Rezerwuj
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <div id="dateSheet" class="fixed inset-0 z-50 hidden md:hidden">
+    <div class="absolute inset-0 bg-black/60" onclick="closeDateSheet()"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-neutral-200 rounded-t-2xl">
+      <div class="flex justify-end p-3 border-b border-neutral-100">
+        <button onclick="closeDateSheet()" class="text-neutral-500 hover:text-neutral-800 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <input id="mobileDatePicker" type="text" class="hidden">
+    </div>
+  </div>
+
+</div>
+
+<script>
+const modal = document.getElementById('bookingModal');
+const serviceInput = document.getElementById('selectedService');
+const durationInput = document.getElementById('selectedDuration');
+const timeSelect = document.getElementById('time');
+const dateInput = document.getElementById('date');
+const mobileInput = document.getElementById('mobileDatePicker');
+const sheet = document.getElementById('dateSheet');
+
+let SERVICE_DURATIONS = {};
+let bookedSlots = [];
+let currentDate = null;
+let desktopFp = null;
+let mobileFp = null;
+
+async function loadDurations() {
+  const res = await fetch('/booking/service-durations');
+  SERVICE_DURATIONS = await res.json();
+}
+
+function timeToMinutes(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function minutesToTime(m) {
+  const h = String(Math.floor(m / 60)).padStart(2, '0');
+  const min = String(m % 60).padStart(2, '0');
+  return `${h}:${min}`;
+}
+
+function timesOverlap(aStart, aDur, bStart, bDur) {
+  return aStart < bStart + bDur && bStart < aStart + aDur;
+}
+
+function salonStart(day) { return day === 6 ? 600 : 540; }
+function salonEnd(day) { return day === 6 ? 900 : 1020; }
+
+function generateSlots() {
+  timeSelect.innerHTML = '';
+  const dur = parseInt(durationInput.value) || 60;
+  const day = currentDate.getDay();
+  const start = salonStart(day);
+  const end = salonEnd(day);
+  const now = new Date();
+  const isToday = currentDate.toDateString() === now.toDateString();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+
+  for (let t = start; t + dur <= end; t += 30) {
+    if (isToday && t <= nowMins) continue;
+    const conflict = bookedSlots.some(b =>
+      timesOverlap(t, dur, timeToMinutes(b.time), b.duration)
+    );
+    if (!conflict) {
+      const option = document.createElement('option');
+      option.value = minutesToTime(t);
+      option.textContent = minutesToTime(t);
+      timeSelect.appendChild(option);
+    }
+  }
+
+  if (!timeSelect.options.length) {
+    const option = document.createElement('option');
+    option.textContent = 'Brak wolnych godzin';
+    option.disabled = true;
+    option.selected = true;
+    timeSelect.appendChild(option);
+    timeSelect.disabled = true;
+  } else {
+    timeSelect.disabled = false;
+  }
+}
+
+async function handleDateChange(date) {
+  currentDate = date;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const d = `${year}-${month}-${day}`;
+  const res = await fetch('/booking/booked-times?date=' + d);
+  bookedSlots = await res.json();
+  generateSlots();
+}
+
+function openDateSheet() { sheet.classList.remove('hidden'); }
+function closeDateSheet() { sheet.classList.add('hidden'); }
+
+async function openBookingModal(serviceName) {
+  await loadDurations();
+  serviceInput.value = serviceName;
+  durationInput.value = SERVICE_DURATIONS[serviceName] || 60;
+  dateInput.value = '';
+  timeSelect.innerHTML = '<option hidden selected>Najpierw wybierz datę</option>';
+  timeSelect.disabled = true;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+
+  if (desktopFp) desktopFp.destroy();
+  if (mobileFp) mobileFp.destroy();
+
+  const isMobile = window.innerWidth < 768;
+
+  desktopFp = flatpickr(dateInput, {
+    locale: flatpickr.l10ns.pl,
+    dateFormat: "Y-m-d",
+    minDate: "today",
+    disableMobile: true,
+    clickOpens: false,
+    disable: [date => date.getDay() === 0],
+    onChange: d => handleDateChange(d[0])
+  });
+
+  if (mobileInput) {
+    mobileFp = flatpickr(mobileInput, {
+      locale: flatpickr.l10ns.pl,
+      dateFormat: "Y-m-d",
+      inline: true,
+      disable: [date => date.getDay() === 0],
+      onChange: d => {
+        closeDateSheet();
+        dateInput.value = desktopFp.formatDate(d[0], "Y-m-d");
+        handleDateChange(d[0]);
+      }
+    });
+  }
+
+  dateInput.addEventListener("click", () => {
+    isMobile ? openDateSheet() : desktopFp.open();
+  });
+}
+
+function closeBookingModal() {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  if (desktopFp) desktopFp.destroy();
+  if (mobileFp) mobileFp.destroy();
+}
+
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeBookingModal();
+});
+</script>

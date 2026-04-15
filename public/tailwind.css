@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@plugin "flyonui" {
+  themes: false;
+  base: false;
+}
+
+@media (max-width: 768px) {
+
+  .flatpickr-calendar.inline {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .flatpickr-rContainer {
+    width: 100% !important;
+  }
+
+  .flatpickr-days {
+    width: 100% !important;
+  }
+
+  .dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .flatpickr-day {
+    max-width: unset !important;
+    width: calc(100% / 7) !important;
+    height: 44px;
+    line-height: 44px;
+  }
+
+  .flatpickr-weekdays {
+    width: 100% !important;
+  }
+
+  .flatpickr-weekday {
+    width: calc(100% / 7) !important;
+  }
+
+  .flatpickr-current-month {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+}

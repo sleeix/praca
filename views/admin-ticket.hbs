@@ -1,0 +1,94 @@
+<div class="min-h-screen bg-neutral-100">
+  <div class="max-w-6xl mx-auto px-2 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+      {{> dashboardSidebar activeTab="admin-messages"}}
+
+      <div class="md:col-span-3 flex flex-col gap-4">
+
+        <div class="bg-white rounded-2xl shadow-sm border border-neutral-200 px-6 py-4">
+          <div class="flex items-center gap-3">
+            <a href="/admin/messages" class="text-neutral-400 hover:text-neutral-700 transition shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-bold text-neutral-900 truncate">#{{ticket.id}} - {{ticket.subject}}</p>
+              <p class="text-xs text-neutral-400 mt-0.5 break-word truncate">
+                {{ticket.name}} · {{ticket.email}}{{#if ticket.phone}} · {{ticket.phone}}{{/if}}
+              </p>
+            </div>
+            {{#if (eq ticket.status "closed")}}
+            <form action="/admin/messages/{{ticket.id}}/close" method="POST">
+              <button type="submit" title="Otwórz ponownie"
+                class="p-2 rounded-xl hover:bg-neutral-100 text-neutral-400 hover:text-neutral-700 transition">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+                </svg>
+              </button>
+            </form>
+            {{else}}
+            <form action="/admin/messages/{{ticket.id}}/close" method="POST">
+              <button type="submit" title="Zamknij wątek"
+                class="p-2 rounded-xl hover:bg-red-50 text-neutral-400 hover:text-red-500 transition">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </button>
+            </form>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3 bg-white rounded-2xl border border-neutral-200 p-4">
+          {{#each messages}}
+          <div class="flex {{#if (eq sender 'admin')}}justify-end{{else}}justify-start{{/if}}">
+            <div class="max-w-[80%]">
+              {{#if (eq sender 'user')}}
+              <div class="flex items-center gap-2 mb-1">
+                <div
+                  class="w-6 h-6 rounded-full bg-neutral-300 flex items-center justify-center text-xs font-bold text-neutral-700">
+                  K</div>
+                <span class="text-xs text-neutral-500 font-semibold">Klient</span>
+              </div>
+              {{/if}}
+              <div class="px-4 py-3 rounded-2xl text-sm leading-relaxed break-all overflow-hidden
+                {{#if (eq sender 'admin')}}
+                  bg-amber-400 text-neutral-900 rounded-br-sm
+                {{else}}
+                  bg-white border border-neutral-200 text-neutral-800 rounded-bl-sm shadow-sm
+                {{/if}}">
+                {{message}}
+              </div>
+              <p class="text-xs text-neutral-400 mt-1 {{#if (eq sender 'admin')}}text-right{{/if}}">
+                {{formatDateTimePL created_at}}
+              </p>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-neutral-200 p-4">
+          {{#if (eq ticket.status "closed")}}
+          <div class="rounded-xl border border-neutral-200 p-2 text-center">
+            <p class="text-sm text-neutral-400">Wątek jest zamknięty.</p>
+          </div>
+          {{else}}
+          <form action="/admin/messages/{{ticket.id}}/reply" method="POST" class="flex gap-3 items-end">
+            <textarea name="message" rows="1" required placeholder="Wiadomość"
+              class="flex-1 rounded-xl border border-neutral-200 px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition resize-none"></textarea>
+            <button type="submit"
+              class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-neutral-900 text-sm font-bold transition shrink-0">
+              Odpowiedz
+            </button>
+          </form>
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
